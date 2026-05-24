@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NUZHAT // CONTENT STRATEGY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0a;
+      --surface:   #111111;
+      --surface-2: #181818;
+      --surface-3: #1e1e1e;
+      --border:    #242424;
+      --border-2:  #2e2e2e;
+      --text:      #e8e8e8;
+      --text-2:    #999999;
+      --text-3:    #555555;
+      --red:       #dc143c;
+      --red-dim:   #6b0a1e;
+      --red-glow:  rgba(220,20,60,0.10);
+      --green:     #3fb950;
+      --yellow:    #e3b341;
+      --blue:      #58a6ff;
+      --font:      'JetBrains Mono', 'Fira Code', Consolas, monospace;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --radius:    4px;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; line-height: 1.6; }
+
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border-2);
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 48px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .topbar-brand { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+    .topbar-brand .prefix { color: var(--red); }
+    .topbar-brand .sep { color: var(--text-3); margin: 0 3px; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .cursor { display: inline-block; width: 7px; height: 13px; background: var(--red); animation: blink 1.2s step-end infinite; vertical-align: middle; margin-left: 2px; }
+    .topbar-date { font-size: 0.6rem; color: var(--text-3); letter-spacing: 0.1em; }
+
+    /* ── PAGE WRAPPER ── */
+    .content-page { display: flex; flex-direction: column; min-height: calc(100vh - 48px); }
+
+    /* ── HEADER ── */
+    .cp-header { padding: 20px 20px 0; flex-shrink: 0; }
+    .cp-eyebrow { font-family: var(--font); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-3); margin-bottom: 6px; }
+    .cp-title { font-family: var(--font); font-size: 1.5rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text); line-height: 1; margin-bottom: 8px; }
+    .cp-title span { color: var(--red); }
+    .cp-tagline { font-family: var(--font-body); font-size: 0.85rem; color: var(--text-3); }
+
+    /* ── SUB-NAV ── */
+    .cp-subnav {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      margin: 16px 0 0;
+      flex-wrap: wrap;
+      padding: 0 20px;
+      flex-shrink: 0;
+    }
+    .cp-subnav-tab {
+      font-family: var(--font);
+      font-size: 0.63rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 9px 14px;
+      cursor: pointer;
+      color: var(--text-3);
+      border: none;
+      background: none;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .cp-subnav-tab:hover { color: var(--text-2); }
+    .cp-subnav-tab.active { color: var(--text); border-bottom-color: var(--red); }
+    .cp-panel { display: none; }
+    .cp-panel.active { display: block; }
+
+    /* ── CONTENT GRID (desktop: sidebar pinned right) ── */
+    .cp-content-grid {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      flex: 1;
+      min-height: 0;
+    }
+    .cp-main { min-width: 0; padding: 24px 20px 60px; }
+    .cp-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      padding: 20px 16px 40px;
+    }
+
+    /* ── SHARED SECTION STYLES ── */
+    .cp-section { margin-bottom: 32px; }
+    .cp-section-label { font-family: var(--font); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red); margin-bottom: 14px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+    /* ── BRAND IDENTITY ── */
+    .cp-brand-row { display: flex; flex-direction: column; gap: 10px; background: var(--surface-2); border: 1px solid var(--border); border-left: 3px solid var(--red); border-radius: 0 var(--radius) var(--radius) 0; padding: 14px 16px; }
+    .brand-quote { font-family: var(--font-body); font-size: 0.95rem; font-style: italic; color: var(--text); font-weight: 500; line-height: 1.6; }
+    .brand-hook-item { font-family: var(--font-body); font-size: 0.84rem; color: var(--text-2); padding-left: 14px; position: relative; margin-bottom: 4px; }
+    .brand-hook-item::before { content: '→'; position: absolute; left: 0; color: var(--text-3); font-size: 0.72rem; top: 2px; }
+
+    /* ── SERIES CARDS ── */
+    .series-grid { display: flex; flex-direction: column; gap: 10px; }
+    .series-card { background: var(--surface-2); border: 1px solid var(--border); border-left: 3px solid var(--red); border-radius: 0 var(--radius) var(--radius) 0; padding: 12px 16px; }
+    .series-card-tag { font-family: var(--font); font-size: 0.54rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); border: 1px solid var(--text-3); display: inline-block; padding: 1px 6px; border-radius: 2px; margin-bottom: 6px; }
+    .series-card-title { font-family: var(--font); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); margin-bottom: 4px; }
+    .series-card-title span { color: var(--red); }
+    .series-card-hook { font-family: var(--font-body); font-size: 0.86rem; color: var(--text-2); line-height: 1.6; margin-bottom: 6px; }
+    .series-card-notes { display: flex; flex-direction: column; gap: 3px; }
+    .series-card-note { font-family: var(--font-body); font-size: 0.8rem; color: var(--text-3); padding-left: 12px; position: relative; line-height: 1.5; }
+    .series-card-note::before { content: '·'; position: absolute; left: 3px; color: var(--text-3); }
+
+    /* ── WEEKLY CADENCE ── */
+    .week-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .week-col { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+    .week-col-day { font-family: var(--font); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--yellow); margin-bottom: 3px; }
+    .week-col-format { font-family: var(--font); font-size: 0.7rem; color: var(--red); margin-bottom: 10px; }
+    .week-col-item { font-family: var(--font-body); font-size: 0.82rem; color: var(--text-2); padding-left: 12px; position: relative; margin-bottom: 4px; }
+    .week-col-item::before { content: '·'; position: absolute; left: 3px; color: var(--text-3); }
+
+    /* ── IDEAS LIST ── */
+    .cp-ideas-list { display: flex; flex-direction: column; gap: 7px; }
+    .idea-row { display: flex; align-items: flex-start; gap: 8px; padding: 8px 12px; border-radius: var(--radius); border: 1px solid var(--border); font-family: var(--font-body); font-size: 0.84rem; color: var(--text-2); line-height: 1.4; }
+    .idea-row:hover { background: var(--surface-2); }
+    .idea-format { font-family: var(--font); font-size: 0.54rem; font-weight: 700; letter-spacing: 0.08em; padding: 2px 6px; border-radius: 2px; flex-shrink: 0; margin-top: 3px; text-transform: uppercase; }
+    .if-reel     { background: rgba(220,20,60,0.1);   color: var(--red);    border: 1px solid rgba(220,20,60,0.2); }
+    .if-carousel { background: rgba(88,166,255,0.08); color: var(--blue);   border: 1px solid rgba(88,166,255,0.2); }
+    .if-collab   { background: rgba(245,158,11,0.09); color: var(--yellow); border: 1px solid rgba(245,158,11,0.2); }
+
+    /* ── PHASES ── */
+    .phases-list { display: flex; flex-direction: column; gap: 10px; }
+    .phase-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+    .phase-period { font-family: var(--font); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); margin-bottom: 2px; }
+    .phase-name { font-family: var(--font); font-size: 0.72rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .phase-target { font-family: var(--font-body); font-size: 0.8rem; color: var(--red); }
+    .phase-item { font-family: var(--font-body); font-size: 0.84rem; color: var(--text-2); padding-left: 14px; position: relative; margin-bottom: 4px; }
+    .phase-item::before { content: '→'; position: absolute; left: 0; color: var(--text-3); font-size: 0.7rem; top: 1px; }
+
+    /* ── PILLAR DETAIL LAYOUT ── */
+    .cp-pillar-detail { display: grid; grid-template-columns: 240px 1fr; gap: 20px; align-items: start; }
+    .cp-pillar-desc-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; position: sticky; top: 64px; }
+    .pillar-icon { font-size: 1.3rem; margin-bottom: 8px; }
+    .pillar-name { font-family: var(--font); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); margin-bottom: 10px; }
+    .pillar-tag { font-family: var(--font-body); font-size: 0.82rem; color: var(--text-2); padding-left: 12px; position: relative; margin-bottom: 4px; }
+    .pillar-tag::before { content: '→'; position: absolute; left: 0; color: var(--text-3); font-size: 0.7rem; top: 2px; }
+    .pillar-tags { display: flex; flex-direction: column; gap: 4px; }
+
+    /* ── ART SUB-NAV ── */
+    .art-subnav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+    .art-subnav-tab { font-family: var(--font); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; border: 1px solid var(--border); background: none; color: var(--text-3); border-radius: 2px; cursor: pointer; transition: color 0.15s, border-color 0.15s, background 0.15s; }
+    .art-subnav-tab:hover { color: var(--text-2); border-color: var(--text-3); }
+    .art-subnav-tab.active { color: var(--text); border-color: var(--red); background: rgba(220,20,60,0.06); }
+    .art-subpanel { display: none; }
+    .art-subpanel.active { display: block; }
+
+    /* ── SCRIPT CARDS ── */
+    .script-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
+    .script-card-header { margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+    .script-card-num { font-family: var(--font); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 4px; }
+    .script-card-title { font-family: var(--font); font-size: 0.8rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .script-card-meta { font-family: var(--font); font-size: 0.58rem; color: var(--text-3); letter-spacing: 0.06em; }
+    .script-beats { display: flex; flex-direction: column; gap: 12px; }
+    .script-beat { display: grid; grid-template-columns: 56px 1fr; gap: 12px; align-items: start; }
+    .beat-time { font-family: var(--font); font-size: 0.58rem; font-weight: 700; color: var(--red); letter-spacing: 0.06em; padding-top: 2px; }
+    .beat-text { font-family: var(--font-body); font-size: 0.84rem; color: var(--text-2); line-height: 1.6; }
+    span.dir { font-size: 0.76rem; color: var(--text-3); font-style: italic; }
+
+    /* ── VIBECODE PLAN ── */
+    .vibecode-plan { display: flex; flex-direction: column; gap: 14px; }
+    .vibecode-week { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .vibecode-week-header { display: flex; gap: 12px; align-items: baseline; background: var(--surface-3); padding: 10px 14px; border-bottom: 1px solid var(--border); }
+    .vibecode-wk-num { font-family: var(--font); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; color: var(--red); white-space: nowrap; }
+    .vibecode-wk-title { font-family: var(--font-body); font-size: 0.86rem; color: var(--text); }
+    .vibecode-wk-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 10px 14px; }
+    .vibecode-wk-item { font-family: var(--font-body); font-size: 0.82rem; color: var(--text-2); padding: 4px 0 4px 12px; position: relative; border-bottom: 1px solid var(--border); }
+    .vibecode-wk-item:last-child { border-bottom: none; }
+    .vibecode-wk-item::before { content: '·'; position: absolute; left: 3px; color: var(--text-3); }
+    .vibecode-wk-item.full { grid-column: 1 / -1; }
+    .vibecode-wk-context { padding: 8px 14px; background: rgba(220,20,60,0.04); border-top: 1px solid var(--border); font-family: var(--font); font-size: 0.6rem; color: var(--text-3); letter-spacing: 0.04em; line-height: 1.6; }
+
+    /* ── ART TEXT ── */
+    .art-bio-block { font-family: var(--font-body); font-size: 0.88rem; color: var(--text-2); line-height: 1.75; margin-bottom: 14px; }
+    .art-quote { font-family: var(--font-body); font-size: 0.92rem; font-style: italic; color: var(--text); border-left: 3px solid var(--red); padding: 10px 14px; background: rgba(220,20,60,0.04); border-radius: 0 var(--radius) var(--radius) 0; margin: 14px 0; line-height: 1.7; }
+    .art-show-title { font-family: var(--font); font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .art-show-title span { font-size: 0.6rem; font-weight: 400; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; }
+    .art-show-sub { font-family: var(--font-body); font-size: 0.78rem; color: var(--text-3); margin-bottom: 16px; }
+    .art-works-list { display: flex; flex-direction: column; gap: 0; }
+    .art-work { padding: 11px 0; border-bottom: 1px solid var(--border); }
+    .art-work:last-child { border-bottom: none; }
+    .art-work-title { font-family: var(--font); font-size: 0.72rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .art-work-meta { font-family: var(--font); font-size: 0.58rem; color: var(--text-3); letter-spacing: 0.06em; margin-bottom: 3px; }
+    .art-work-desc { font-family: var(--font-body); font-size: 0.82rem; color: var(--text-2); line-height: 1.5; }
+
+    /* ── PALETTE CARD ── */
+    .palette-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .palette-gradient {
+      height: 120px;
+      background: radial-gradient(ellipse at 30% 60%, #8b1a1a 0%, #3d0505 40%, #0a0a0a 70%),
+                  radial-gradient(ellipse at 80% 20%, #c45400 0%, #7a1a0a 35%, transparent 65%),
+                  radial-gradient(ellipse at 60% 90%, #6b0a2a 0%, transparent 50%);
+      background-blend-mode: screen;
+    }
+    .palette-swatches { display: flex; gap: 7px; padding: 8px 12px; align-items: center; flex-wrap: wrap; }
+    .pswatch { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; }
+    .palette-label { font-family: var(--font); font-size: 0.54rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); padding: 0 12px 8px; }
+
+    /* ── PLATFORM CARDS ── */
+    .platform-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; margin-bottom: 6px; }
+    .pf-platform { font-family: var(--font); font-size: 0.57rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-3); margin-bottom: 2px; }
+    .pf-count { font-family: var(--font); font-size: 1rem; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .pf-count span { font-size: 0.65rem; color: var(--text-3); font-weight: 400; margin-left: 3px; }
+    .pf-goal { font-family: var(--font); font-size: 0.6rem; color: var(--text-3); margin: 2px 0 6px; letter-spacing: 0.04em; }
+    .pf-bar { height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .pf-bar-fill { height: 100%; border-radius: 2px; }
+    .pf-bar-fill.ig { background: var(--red); }
+    .pf-bar-fill.tt { background: var(--text-3); }
+    .pf-bar-fill.li { background: var(--blue); }
+    .pf-status { font-family: var(--font); font-size: 0.56rem; color: var(--text-3); margin-top: 5px; letter-spacing: 0.04em; }
+
+    /* ── SETUP BUDGET ── */
+    .setup-item { background: var(--surface-2); border: 1px solid var(--border); border-top: 2px solid var(--red); border-radius: var(--radius); padding: 10px 12px; margin-bottom: 6px; }
+    .setup-item-name { font-family: var(--font-body); font-size: 0.86rem; color: var(--text); font-weight: 600; margin-bottom: 3px; }
+    .setup-item-note { font-family: var(--font-body); font-size: 0.74rem; color: var(--text-3); line-height: 1.4; margin-bottom: 6px; }
+    .setup-item-amt { font-family: var(--font); font-size: 0.7rem; font-weight: 700; color: var(--red); }
+    .setup-total { margin-top: 8px; padding: 8px 12px; background: rgba(220,20,60,0.04); border: 1px solid rgba(220,20,60,0.12); border-radius: var(--radius); font-family: var(--font); font-size: 0.7rem; font-weight: 700; color: var(--text-2); letter-spacing: 0.08em; display: flex; justify-content: space-between; }
+
+    /* ── SIDEBAR TOGGLE (mobile) ── */
+    .sidebar-toggle {
+      display: none;
+      width: 100%;
+      padding: 10px 20px;
+      background: var(--surface);
+      border: none;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      cursor: pointer;
+      text-align: left;
+    }
+    .sidebar-toggle:hover { color: var(--text-2); }
+    .cp-sidebar.collapsed { display: none; }
+
+    /* ════════════════════════════════════════
+       RESPONSIVE — MOBILE
+    ════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .cp-content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cp-sidebar {
+        border-left: none;
+        border-top: 1px solid var(--border);
+        padding: 16px;
+      }
+
+      .sidebar-toggle { display: block; }
+
+      /* pillar detail collapses to single col */
+      .cp-pillar-detail {
+        grid-template-columns: 1fr;
+      }
+      .cp-pillar-desc-card { position: static; }
+
+      /* week grid → single col */
+      .week-grid { grid-template-columns: 1fr; }
+
+      /* vibecode wk body → single col */
+      .vibecode-wk-body { grid-template-columns: 1fr; }
+
+      /* script beats → stack */
+      .script-beat { grid-template-columns: 44px 1fr; gap: 8px; }
+
+      /* header text scale */
+      .cp-title { font-size: 1.2rem; }
+      .cp-tagline { font-size: 0.78rem; }
+
+      /* subnav scrollable */
+      .cp-subnav { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 1px; }
+      .cp-subnav::-webkit-scrollbar { height: 0; }
+
+      .cp-main { padding: 16px 16px 40px; }
+      .topbar-date { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .cp-title { font-size: 1.05rem; }
+      .cp-tagline { font-size: 0.72rem; }
+      .brand-quote { font-size: 0.88rem; }
+      .phase-card { padding: 12px; }
+      .script-card { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-brand">
+      <span class="prefix">NUZHAT</span>
+      <span class="sep">//</span>
+      <span>CONTENT STRATEGY</span>
+      <span class="cursor"></span>
+    </div>
+    <div class="topbar-date" id="live-date"></div>
+  </div>
+
+  <div class="content-page">
+
+    <div class="cp-header">
+      <div class="cp-eyebrow">// 02 · content strategy · 2026</div>
+      <div class="cp-title">2b or not <span>2B</span></div>
+      <div class="cp-tagline">PAINTER &nbsp;·&nbsp; PROGRAMMER &nbsp;·&nbsp; PRODUCT MANAGER &nbsp;·&nbsp; building hard systems while being a girliepop</div>
+    </div>
+
+    <nav class="cp-subnav">
+      <button class="cp-subnav-tab active" data-panel="overview">// overview</button>
+      <button class="cp-subnav-tab" data-panel="tech">💻 tech baddie</button>
+      <button class="cp-subnav-tab" data-panel="art">🎨 2b or not 2B</button>
+      <button class="cp-subnav-tab" data-panel="dhaka">🌶️ made in dhaka</button>
+      <button class="cp-subnav-tab" data-panel="movement">💃 movement</button>
+      <button class="cp-subnav-tab" data-panel="build">⚡ build logs</button>
+    </nav>
+
+    <div class="cp-content-grid">
+
+      <!-- ── MAIN PANELS ── -->
+      <div class="cp-main">
+
+        <!-- ══════ OVERVIEW ══════ -->
+        <div class="cp-panel active" id="cp-overview">
+
+          <div class="cp-section">
+            <div class="cp-section-label">// brand identity</div>
+            <div class="cp-brand-row">
+              <div class="brand-quote">"Dark cherry girlie. South Asian. Tech baddie. Built the life from scratch — now showing you the view."</div>
+              <div>
+                <div class="brand-hook-item">Visual: dark editorial · cherry red lip · neon sign · code on screen · paint on hands</div>
+                <div class="brand-hook-item">Audio: confident voiceover · trending sounds + South Asian indie · zero apology in the tone</div>
+                <div class="brand-hook-item">Story: Dhaka → RIT → Microsoft → Vancouver — every chapter has a hook worth telling</div>
+                <div class="brand-hook-item">Energy: Gazish-coded — unapologetically herself, not centered around external validation</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cp-section">
+            <div class="cp-section-label">// series concepts · recurring formats</div>
+            <div class="series-grid">
+
+              <div class="series-card" style="border-left-color:#58a6ff">
+                <div class="series-card-tag" style="border-color:#58a6ff;color:#58a6ff;">recurring series</div>
+                <div class="series-card-title">Vibecode with a <span style="color:#58a6ff">bigtech</span> product engineer</div>
+                <div class="series-card-hook">Build something real — live, max 60 seconds — with the UX/product thinking narrated out loud by a PM who ships for millions of developers daily.</div>
+                <div class="series-card-notes">
+                  <div class="series-card-note">Terminal UI, dashboards, feature flags, AI chat — things engineers actually build</div>
+                  <div class="series-card-note">Both beginner and senior engineers leave with something</div>
+                  <div class="series-card-note">⚡ Full week-by-week plan in the Tech Baddie tab</div>
+                </div>
+              </div>
+
+              <div class="series-card">
+                <div class="series-card-tag">recurring series</div>
+                <div class="series-card-title">Building hard systems while being a <span>girliepop</span></div>
+                <div class="series-card-hook">The behind-the-scenes of shipping serious technical work while being utterly, unapologetically yourself.</div>
+                <div class="series-card-notes">
+                  <div class="series-card-note">GRWM → ship a feature. Cherry red lip → stand-up. Paint on hands → product review.</div>
+                  <div class="series-card-note">The antidote to the "dress for the job you want" takeover culture</div>
+                  <div class="series-card-note">Subtext: you don't have to disappear to be taken seriously</div>
+                </div>
+              </div>
+
+              <div class="series-card" style="border-left-color:#f472b6">
+                <div class="series-card-tag" style="border-color:#f472b6;color:#f472b6;">recurring series</div>
+                <div class="series-card-title">Painting series while <span style="color:#f472b6">talking about life</span></div>
+                <div class="series-card-hook">Hands on the canvas, mouth on the real things — grief, ambition, being far from home, the chapters that made you.</div>
+                <div class="series-card-notes">
+                  <div class="series-card-note">Speed paint as visual anchor — words are the real content</div>
+                  <div class="series-card-note">Possible angle: each painting in Bideshini show gets a reel with its origin story</div>
+                  <div class="series-card-note">Possible angle: "what I was going through when I made this" — emotional rawness + art = retention</div>
+                </div>
+              </div>
+
+              <div class="series-card" style="border-left-color:#e3b341">
+                <div class="series-card-tag" style="border-color:#e3b341;color:#e3b341;">recurring series</div>
+                <div class="series-card-title">The <span style="color:#e3b341">lipstick</span> series</div>
+                <div class="series-card-hook">She has a massive collection. Engineers are supposedly ugly. Let's settle this.</div>
+                <div class="series-card-notes">
+                  <div class="series-card-note">Hook: "what I pair with my techbro Patagonia vest 💀"</div>
+                  <div class="series-card-note">Hook: "what I wear to meetings where I'm the only woman in the room"</div>
+                  <div class="series-card-note">Hook: "color theory from an artist who also writes product specs"</div>
+                </div>
+              </div>
+
+              <div class="series-card" style="border-left-color:#c45400">
+                <div class="series-card-tag" style="border-color:#c45400;color:#c45400;">recurring series</div>
+                <div class="series-card-title">"I don't want to work on AI but I'm afraid I won't be <span style="color:#c45400">employable</span>"</div>
+                <div class="series-card-hook">Career paths for people who hate where AI is going — but also fear being replaced by it. Validates the fear and gives a real way forward.</div>
+                <div class="series-card-notes">
+                  <div class="series-card-note"><strong style="color:var(--text);">"AI is destroying the environment"</strong> → Energy systems · Nuclear engineering · Climate tech infrastructure · Sustainability PM</div>
+                  <div class="series-card-note"><strong style="color:var(--text);">"AI is making the internet dangerous"</strong> → Cybersecurity · Digital forensics · Privacy law · Data protection officer</div>
+                  <div class="series-card-note"><strong style="color:var(--text);">"AI is killing creativity"</strong> → Arts education policy · Cultural preservation tech · IP/copyright law for creative industries</div>
+                  <div class="series-card-note"><strong style="color:var(--text);">"I love tech but not AI products"</strong> → Developer tooling · Game engines · Systems programming · Accessibility engineering</div>
+                  <div class="series-card-note" style="color:var(--text);font-style:italic;border-top:1px solid var(--border);padding-top:8px;margin-top:4px;">"I work in big tech — but I'm your older sister who will always tell you to follow your heart and passion over whatever major is simply in demand right now."</div>
+                </div>
+              </div>
+
+              <div class="series-card" style="border-left-color:#34d399">
+                <div class="series-card-tag" style="border-color:#34d399;color:#34d399;">recurring series</div>
+                <div class="series-card-title">How to adult when you love your <span style="color:#34d399">family · friends · job · hobbies · fitness · and yourself</span></div>
+                <div class="series-card-hook">The "I have it all" series that's actually honest about what it takes to hold all of it at once — without performing wellness.</div>
+                <div class="series-card-notes">
+                  <div class="series-card-note">Quick meal prep — real ones, not aesthetic ones</div>
+                  <div class="series-card-note">Time management without the hustle-porn</div>
+                  <div class="series-card-note">The "this is what a full life looks like" counter-narrative to grind culture</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="cp-section">
+            <div class="cp-section-label">// weekly posting cadence · 3× instagram + reposts to TikTok (once launched)</div>
+            <div class="week-grid">
+              <div class="week-col">
+                <div class="week-col-day">Sunday</div>
+                <div class="week-col-format">Reel — movement / lifestyle / specific moment</div>
+                <div class="week-col-item">1 hr filming already in schedule</div>
+                <div class="week-col-item">Bachata social, Coal Harbour run, potluck, Saturday vlog</div>
+                <div class="week-col-item">Hook in the first 2 seconds — specific, not generic</div>
+              </div>
+              <div class="week-col">
+                <div class="week-col-day">Tuesday or Wednesday</div>
+                <div class="week-col-format">Carousel — a real story or real insight</div>
+                <div class="week-col-item">Specific moments from the arc: hackathon, RIT, pivot</div>
+                <div class="week-col-item">Product thinking made human — zero buzzwords</div>
+                <div class="week-col-item">Carousels drive saves + shares → algorithm fuel</div>
+              </div>
+              <div class="week-col">
+                <div class="week-col-day">Friday</div>
+                <div class="week-col-format">Reel or photo — art / aesthetic / current mood</div>
+                <div class="week-col-item">Speed paint, sketch journal, desk neon setup</div>
+                <div class="week-col-item">Dark editorial photo dump — cherry red moment</div>
+                <div class="week-col-item">GRWM only when you actually feel it</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cp-section">
+            <div class="cp-section-label">// ⭐ anchor hooks · save for when you have traction</div>
+            <div class="cp-ideas-list">
+              <div class="idea-row"><span class="idea-format if-reel">reel</span>POV: 5'3. From Dhaka. National basketball team at 16. Microsoft at 22.</div>
+              <div class="idea-row"><span class="idea-format if-carousel">carousel</span>I missed 4 years of my family's lives studying abroad. Then I flew them to Seattle to see the life their sacrifices allowed me to build.</div>
+              <div class="idea-row"><span class="idea-format if-reel">reel</span>I won 5 hackathons at 19 and built Bangladesh's first cybersafety startup.</div>
+              <div class="idea-row"><span class="idea-format if-reel">reel</span>I graduated with 50K USD in student loans. Big tech offered me a 50K signing bonus.</div>
+              <div class="idea-row"><span class="idea-format if-reel">reel</span>I delivered the commencement speech for my college at graduation. No perfect GPA. Just the audacity to keep going.</div>
+            </div>
+          </div>
+
+          <div class="cp-section">
+            <div class="cp-section-label">// growth roadmap · 1,200 → 20,000</div>
+            <div class="phases-list">
+              <div class="phase-card">
+                <div>
+                  <div class="phase-period">May – Jun 2026</div>
+                  <div class="phase-name">Phase 1 · Foundation</div>
+                  <div class="phase-target">Target: 2,000 IG followers</div>
+                </div>
+                <div>
+                  <div class="phase-item">Lock in visual identity: dark editorial, cherry red, neon in background</div>
+                  <div class="phase-item">Get the setup done: neon sign, shelf, mic, LED bias lighting</div>
+                  <div class="phase-item">Lead with specific story hooks — no generic content yet</div>
+                  <div class="phase-item">Post 3× / week, non-negotiable consistency before chasing virality</div>
+                  <div class="phase-item">Build 10 TikTok drafts before launching the account</div>
+                </div>
+              </div>
+              <div class="phase-card">
+                <div>
+                  <div class="phase-period">Jul – Aug 2026</div>
+                  <div class="phase-name">Phase 2 · Momentum</div>
+                  <div class="phase-target">Target: 5,000 IG · TikTok launched</div>
+                </div>
+                <div>
+                  <div class="phase-item">Launch TikTok with first 10 posts queued — reuse filmed IG content</div>
+                  <div class="phase-item">Use Toronto + Banff trips as travel content moments</div>
+                  <div class="phase-item">Publish one anchor story carousel (PrivaC, basketball, or RIT pivot)</div>
+                  <div class="phase-item">BC Dance collab drops on both platforms</div>
+                  <div class="phase-item">2b or not 2B neon sign reveal post</div>
+                </div>
+              </div>
+              <div class="phase-card">
+                <div>
+                  <div class="phase-period">Sep – Dec 2026</div>
+                  <div class="phase-name">Phase 3 · Scale</div>
+                  <div class="phase-target">Target: 20,000 IG · 5,000 TikTok</div>
+                </div>
+                <div>
+                  <div class="phase-item">"Made in Dhaka" story arc — 6-part carousel series, one artifact per week</div>
+                  <div class="phase-item">Pursue brand partnerships: tech, art, lifestyle, travel</div>
+                  <div class="phase-item">10K → unlock link-in-bio tools + collab eligibility</div>
+                  <div class="phase-item">Guest on a podcast in South Asian Women in Tech niche</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- end overview panel -->
+
+        <!-- ══════ TECH BADDIE ══════ -->
+        <div class="cp-panel" id="cp-tech">
+
+          <div class="art-subnav">
+            <button class="art-subnav-tab active" data-art="tech-bio" style="color:#58a6ff;border-color:#58a6ff;background:rgba(88,166,255,0.06);" onclick="switchTechTab(this)">linkedin bio</button>
+            <button class="art-subnav-tab" onclick="switchTechTab(this)" data-art="tech-scripts">scripts</button>
+            <button class="art-subnav-tab" onclick="switchTechTab(this)" data-art="tech-vibecode">vibecode plan</button>
+            <button class="art-subnav-tab" onclick="switchTechTab(this)" data-art="tech-ideas">all ideas</button>
+          </div>
+
+          <div class="art-subpanel active" id="art-tech-bio">
+            <div class="cp-pillar-detail">
+              <div class="cp-pillar-desc-card" style="border-top:3px solid #58a6ff">
+                <div class="pillar-icon">💻</div>
+                <div class="pillar-name">TECH BADDIE CORE</div>
+                <div class="pillar-tags">
+                  <div class="pillar-tag">What I actually ship at Microsoft</div>
+                  <div class="pillar-tag">AI PM perspective — no jargon</div>
+                  <div class="pillar-tag">Hackathon wins + startup origin</div>
+                  <div class="pillar-tag">Interviewer for uni program</div>
+                  <div class="pillar-tag">Vibecoding + product decisions</div>
+                </div>
+              </div>
+              <div>
+                <div class="cp-section-label" style="margin-bottom:14px;">// linkedin bio · needs observability update ⚠️</div>
+                <div style="background:var(--surface-2);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:0 var(--radius) var(--radius) 0;padding:16px 18px;">
+                  <div style="font-family:var(--font-body);font-size:0.88rem;color:var(--text);line-height:1.7;">
+                    Leading experimentation, feature management, safe agent rollout across Azure and Foundry. I build and shape the primitives behind feature variant authoring, traffic splitting, versioning, telemetry, scorecards, and deployment. Innovating how intelligent systems move and scale safely.
+                  </div>
+                  <div style="margin:12px 0;border-top:1px solid var(--border);"></div>
+                  <div style="font-family:var(--font-body);font-size:0.88rem;color:var(--text);line-height:1.7;">
+                    Software Engineer → UI/UX Researcher → Product Innovation. RIT alumna (Computing Info Sciences + Cybersecurity &amp; Databases + Criminal Justice — because developing nations deserve stronger cyber laws). I work to make technology safe, usable, and human; while wearing bold lipstick and sketching between meetings.
+                  </div>
+                  <div style="margin:12px 0;border-top:1px solid var(--border);"></div>
+                  <div style="font-family:var(--font-body);font-size:0.88rem;color:var(--text);line-height:1.9;">
+                    At 16, I played for Bangladesh's first U18 women's national basketball team and had my first art exhibit. At 17, I was an elementary to middle school Art teacher in Dhaka. At 18, I flew alone and away from home to pursue higher education in New York. At 19, I built PrivaC: Bangladesh's first cybersafety startup. By 22, I was a 5x hackathon winner. At 24, graduation speaker. At 26, solo artshow by the Seattle waterfront. At 27, learning to chill out.
+                  </div>
+                  <div style="margin-top:12px;font-family:var(--font);font-size:0.6rem;color:var(--yellow);letter-spacing:0.1em;">⚠ TODO: update opening paragraph to reflect observability + CoreAI Azure Data work</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="art-subpanel" id="art-tech-scripts">
+
+            <div class="script-card">
+              <div class="script-card-header">
+                <div class="script-card-num">REEL 01</div>
+                <div class="script-card-title">"but does she know how to reverse a binary search tree"</div>
+                <div class="script-card-meta">15 sec · vertical · no face required</div>
+              </div>
+              <div class="script-beats">
+                <div class="script-beat">
+                  <div class="beat-time">0–2s</div>
+                  <div class="beat-text"><span class="dir">[ screen recording or photo of the actual comment ]</span><br>Text overlay, big font: <em>"but does she know how to reverse a binary search tree 💀"</em></div>
+                </div>
+                <div class="script-beat">
+                  <div class="beat-time">2–4s</div>
+                  <div class="beat-text">VO, completely flat: <em>"An actual comment. Under my post."</em></div>
+                </div>
+                <div class="script-beat">
+                  <div class="beat-time">4–11s</div>
+                  <div class="beat-text"><span class="dir">[ fast cut flash — each line ~1s ]</span><br><em>Hackathon 1 → W. &nbsp; Hackathon 2 → W. &nbsp; Hackathon 3 → W. &nbsp; Hackathon 4 → W. &nbsp; Hackathon 5 → W.</em></div>
+                </div>
+                <div class="script-beat">
+                  <div class="beat-time">11–13s</div>
+                  <div class="beat-text">VO, same flat tone: <em>"Five hackathons. Five wins. But sure — let's talk about trees."</em></div>
+                </div>
+                <div class="script-beat">
+                  <div class="beat-time">13–15s</div>
+                  <div class="beat-text"><span class="dir">[ hold on single text card ]</span><br><em>"i help build the systems you code on."</em><br><span class="dir">fade to handle @nuzhatminhaz</span></div>
+                </div>
+              </div>
+              <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);font-family:var(--font);font-size:0.6rem;color:var(--text-3);letter-spacing:0.06em;line-height:1.6;">
+                NOTES: No face needed. The screenshot is the hook — it has to be the real one.<br>
+                Caption: the actual comment in full + "5 for 5 🏆 #womenintech #softwareengineer #microsoft"
+              </div>
+            </div>
+
+            <div class="script-card">
+              <div class="script-card-header">
+                <div class="script-card-num">REEL 00</div>
+                <div class="script-card-title">Intro — certified internet older sister</div>
+                <div class="script-card-meta">~60 sec · face to camera · VO over B-roll · punchy + real · trim on edit</div>
+              </div>
+              <div class="script-beats">
+                <div class="script-beat">
+                  <div class="beat-time">0–5s</div>
+                  <div class="beat-text"><span class="dir">[ face to camera, warm but direct — no intro energy, just landing mid-sentence ]</span><br><em>"I hustled day and night for 8 years in tech while building a life I love, so I am a certified internet older sister."</em><br><span class="dir">[ half smile ]</span><br><em>"My name is Nuzhat, and I am a painter, a programmer, and a product manager. I work to make technology safe, usable, and human — while wearing bold lipstick and sketching between meetings — because I love building hard systems while being a girliepop."</em></div>
+                </div>
+                <div class="script-beat">
+                  <div class="beat-time">5–12s</div>
+                  <div class="beat-text"><span class="dir">[ slightly conspiratorial ]</span><br><em>"When I was 10, I pirated Windows just to use MS Paint on an old CRT monitor."</em><br><span class="dir">[ beat ]</span><br><em>"Imagine working at the place that built your childhood escape."</em><br><span class="dir">[ that's exactly what I said in my 5-hour final round when they asked why I wanted to work there. ]</span></div>
+                </div>
+                <div class="script-beat">
+                  <div class="beat-time">12–22s</div>
+                  <div class="beat-text"><span class="dir">[ slower, honest — this is the origin ]</span><br><em>"Baba left corporate with no safety net to build something of his own. Ammu — a master's degree holder — chose to make our home the foundation we'd launch from. The whole extended family had one conviction: little Nuju will go further."</em><br><span class="dir">[ straight face ]</span><br><em>"No pressure."</em><br><em>"But I wasn't the straight-A student. My heart was in a canvas and a basketball court. I was 5'3 and on the national team. Everyone thought I was a lost cause — but my passion beyond the classroom is what landed me the scholarships to come to the US."</em></div>
+                </div>
+                <div class="script-beat">
+                  <div class="beat-time">22–33s</div>
+                  <div class="beat-text"><span class="dir">[ B-roll: snow, RIT campus, dorm room ]</span><br><em>"At 18 I flew alone to suburban America — to one of the top engineering schools in the country. Next to students who'd been coding since they were 5, while I was still learning to communicate in American English."</em><br><em>"Walking to class in polar vortex warnings. 10x10 dorm room. Big eldest daughter responsibilities, small margin for failure."</em><br><em>"3 to 5 jobs every semester. I was irreplaceable before AI fear was even a thing."</em><br><span class="dir">[ photo of you passed out between classes ]</span><br><em>"That's a photo of me passed out between classes. I think I have two brain cells left."</em></div>
+                </div>
+                <div class="script-beat">
+                  <div class="beat-time">33–44s</div>
+                  <div class="beat-text"><span class="dir">[ pace up — earned it ]</span><br><em>"5 hackathon wins. Worked in engineering, then design, studied cybersecurity — ended up in product."</em><br><em>"Graduation speaker at my college — no perfect GPA, just a community that held my hand through my entire college career."</em><br><em>"Packed 2 suitcases. Flew from New York to Seattle to work at Microsoft headquarters."</em></div>
+                </div>
+                <div class="script-beat">
+                  <div class="beat-time">44–53s</div>
+                  <div class="beat-text"><span class="dir">[ slow right down — emotional payoff ]</span><br><em>"Now my little sisters can finally see what all of this was for: playing Among Us with them day and night, duh."</em><br><em>"My 13-year-old tells her friends I'm the CEO of Windows."</em><br><span class="dir">[ beat. ]</span><br><em>"I'm not. I don't even work on that team. But I did get to work on Xbox stuff — so honestly, close enough."</em><br><span class="dir">[ hold. let them laugh. ]</span></div>
+                </div>
+                <div class="script-beat">
+                  <div class="beat-time">53–60s</div>
+                  <div class="beat-text"><span class="dir">[ back to camera, easy, settled ]</span><br><em>"I bring my chaotic energy to work every day. I drive engineering products I love, without discounting family, friends, hobbies, or fitness — fuelled by energy plus biscuit and chaa."</em><br><em>"If you stick around long enough, you'll learn what I learned — without ending up in the hospital from exhaustion like me."</em><br><span class="dir">[ wink or straight face — your call ]</span><br><em>"Just don't ask me biye and baccha kobe while you're here."</em></div>
+                </div>
+              </div>
+              <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);font-family:var(--font);font-size:0.6rem;color:var(--text-3);letter-spacing:0.06em;line-height:1.6;">
+                SHOOT NOTES: Face to camera: beats 1, 2, 5 (CEO of Windows deadpan), 6. B-roll: RIT snow + dorm + passed-out photo (beat 4).<br>
+                The CEO / Xbox line is the comedy payoff — deadpan, don't rush it.<br>
+                "biye and baccha kobe while you're here" — Bangladeshi viewers lose it, everyone else googles it.<br>
+                Caption: "certified internet older sister, reporting for duty 🔴 #Dhaka #WomenInTech #MicrosoftPM #girliepop"
+              </div>
+            </div>
+
+            <div class="script-card">
+              <div class="script-card-header">
+                <div class="script-card-num">REEL 02</div>
+                <div class="script-card-title">How to break into Product Management</div>
+                <div class="script-card-meta">45–60 sec · face to camera + B-roll · recurring format</div>
+              </div>
+              <div class="script-beats">
+                <div class="script-beat">
+                  <div class="beat-time">0–5s</div>
+                  <div class="beat-text"><span class="dir">[ face to camera, genuinely bemused ]</span><br><em>"Someone told me they want to be a PM because it's more people-facing — so they won't have to stare at a screen and get migraines."</em><br><span class="dir">[ cut to wide shot: you, surrounded by 4 monitors ]</span><br><em>"...Sure."</em></div>
+                </div>
+                <div class="script-beat">
+                  <div class="beat-time">5–12s</div>
+                  <div class="beat-text"><em>"I ask everyone the same first question: <em>why</em> do you want to be a PM? Because your answer tells me whether you actually want this — or whether you just want out of something else."</em></div>
+                </div>
+                <div class="script-beat">
+                  <div class="beat-time">12–22s</div>
+                  <div class="beat-text"><em>"My path: software engineer. UX researcher and designer. Studied cybersecurity and cyber law. Shipped my own startup at 19. Now PM II at Microsoft CoreAI, 3 years in, 8 product areas."</em><br><em>"There is no one straight line. There never was."</em></div>
+                </div>
+                <div class="script-beat">
+                  <div class="beat-time">22–35s</div>
+                  <div class="beat-text"><em>"What actually makes a PM — four things:"</em><br><span class="dir">[ text cards ]</span><br><em>User empathy. Systems thinking. Ruthless prioritisation. Communication that converts.</em></div>
+                </div>
+                <div class="script-beat">
+                  <div class="beat-time">35–48s</div>
+                  <div class="beat-text"><em>"I make about 80 resumes for free every year. For strangers. On LinkedIn. Because nobody handed me a template either."</em><br><em>"The number one thing I fix? People list what they <em>did</em>. PMs need to show what they <em>moved</em>. The number is the story."</em></div>
+                </div>
+                <div class="script-beat">
+                  <div class="beat-time">48–60s</div>
+                  <div class="beat-text"><span class="dir">[ direct, warm, older-sister energy ]</span><br><em>"Drop your current role in the comments. I read them."</em></div>
+                </div>
+              </div>
+              <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);font-family:var(--font);font-size:0.6rem;color:var(--text-3);letter-spacing:0.06em;line-height:1.6;">
+                Caption: "drop your current role below 👇 #ProductManagement #BreakIntoTech #PMCareer #WomenInTech"
+              </div>
+            </div>
+
+          </div><!-- end scripts -->
+
+          <div class="art-subpanel" id="art-tech-vibecode">
+            <div class="cp-section-label" style="margin-bottom:6px;">// vibecode with a bigtech product engineer · week-by-week · max 60 sec reels</div>
+            <div style="font-family:var(--font-body);font-size:0.82rem;color:var(--text-3);margin-bottom:18px;line-height:1.6;">
+              Rule: build something real every week. Narrate the UX/product thinking as you code. Be funny. Be specific.
+            </div>
+            <div class="vibecode-plan">
+              <div class="vibecode-week">
+                <div class="vibecode-week-header"><div class="vibecode-wk-num">WEEK 01</div><div class="vibecode-wk-title">Let's build a terminal UI — what a DevEx PM at Microsoft actually thinks about</div></div>
+                <div class="vibecode-wk-body">
+                  <div class="vibecode-wk-item full"><strong style="color:var(--text);">Build:</strong> A styled CLI prompt interface with command history + error feedback</div>
+                  <div class="vibecode-wk-item">Affordance — does the user know what to type?</div>
+                  <div class="vibecode-wk-item">Feedback loops — what happens when they get it wrong?</div>
+                  <div class="vibecode-wk-item">Error recovery — is the error message actually helpful?</div>
+                  <div class="vibecode-wk-item">Cognitive load — how many commands until it feels overwhelming?</div>
+                </div>
+                <div class="vibecode-wk-context">CONTEXT: "I work in the division that shipped VSCode — used by over 80 million developers. Every character in that terminal was a product decision."</div>
+              </div>
+              <div class="vibecode-week">
+                <div class="vibecode-week-header"><div class="vibecode-wk-num">WEEK 02</div><div class="vibecode-wk-title">Let's build a startup dashboard — thinking like an Azure Managed Grafana PM</div></div>
+                <div class="vibecode-wk-body">
+                  <div class="vibecode-wk-item full"><strong style="color:var(--text);">Build:</strong> A metrics dashboard — requests/sec, error rate, latency p99</div>
+                  <div class="vibecode-wk-item">Information hierarchy — what does your eye hit first?</div>
+                  <div class="vibecode-wk-item">Data-ink ratio — every pixel that isn't data is noise</div>
+                  <div class="vibecode-wk-item">Progressive disclosure — hide the details until they're needed</div>
+                  <div class="vibecode-wk-item">Colour as signal — red/amber/green is a language not a decoration</div>
+                </div>
+                <div class="vibecode-wk-context">CONTEXT: "I shipped observability features for Azure. Every data decision in a dashboard is a product decision about what your users panic about."</div>
+              </div>
+              <div class="vibecode-week">
+                <div class="vibecode-week-header"><div class="vibecode-wk-num">WEEK 03</div><div class="vibecode-wk-title">Let's build a feature flag system — how Microsoft ships safely to millions</div></div>
+                <div class="vibecode-wk-body">
+                  <div class="vibecode-wk-item full"><strong style="color:var(--text);">Build:</strong> Feature toggle UI — enable/disable per user segment, percentage rollout</div>
+                  <div class="vibecode-wk-item">Experimentation design — why you test before you ship</div>
+                  <div class="vibecode-wk-item">Traffic splitting UX — what "5% rollout" means to a real engineer</div>
+                  <div class="vibecode-wk-item">Kill switch design — what happens when something breaks at 2am</div>
+                  <div class="vibecode-wk-item">Audit log — who changed what, and why that matters legally</div>
+                </div>
+                <div class="vibecode-wk-context">CONTEXT: "I'm the PM for feature management and experimentation at Azure. This is literally what I work on."</div>
+              </div>
+              <div class="vibecode-week">
+                <div class="vibecode-week-header"><div class="vibecode-wk-num">WEEK 04</div><div class="vibecode-wk-title">Let's build an AI chat interface — responsible design from someone who ships AI</div></div>
+                <div class="vibecode-wk-body">
+                  <div class="vibecode-wk-item full"><strong style="color:var(--text);">Build:</strong> Chat UI with loading states, streaming text, error handling, retry</div>
+                  <div class="vibecode-wk-item">Expectation setting — the spinner is a promise</div>
+                  <div class="vibecode-wk-item">Graceful degradation — what happens when the model is down?</div>
+                  <div class="vibecode-wk-item">Trust signals — why "AI can make mistakes" disclosures matter</div>
+                  <div class="vibecode-wk-item">Streaming UX — why character-by-character output feels alive</div>
+                </div>
+                <div class="vibecode-wk-context">CONTEXT: "I build the tooling that makes AI agent rollout safe across Azure and Foundry."</div>
+              </div>
+              <div class="vibecode-week">
+                <div class="vibecode-week-header"><div class="vibecode-wk-num">WEEK 05</div><div class="vibecode-wk-title">Let's build an onboarding flow — your first 60 seconds matter more than your product</div></div>
+                <div class="vibecode-wk-body">
+                  <div class="vibecode-wk-item full"><strong style="color:var(--text);">Build:</strong> Multi-step onboarding wizard — progress indicator, skip options, value-first</div>
+                  <div class="vibecode-wk-item">Progressive onboarding — earn trust before asking for data</div>
+                  <div class="vibecode-wk-item">Cognitive load — one question per screen. Always.</div>
+                  <div class="vibecode-wk-item">Value-first design — show the product before asking for an account</div>
+                  <div class="vibecode-wk-item">Drop-off points — where people leave and why</div>
+                </div>
+                <div class="vibecode-wk-context">CONTEXT: "Developer tools live or die at first run. I've watched activation data on products used by millions."</div>
+              </div>
+              <div class="vibecode-week">
+                <div class="vibecode-week-header"><div class="vibecode-wk-num">WEEK 06</div><div class="vibecode-wk-title">Let's design error states — the most neglected screen in every product</div></div>
+                <div class="vibecode-wk-body">
+                  <div class="vibecode-wk-item full"><strong style="color:var(--text);">Build:</strong> Error state component library — 404, 500, empty state, permission denied</div>
+                  <div class="vibecode-wk-item">Empathy in copy — "Something went wrong" is not an error message</div>
+                  <div class="vibecode-wk-item">Actionable recovery — every error needs a next step</div>
+                  <div class="vibecode-wk-item">Tone calibration — a 404 can be funny. A data loss can't.</div>
+                </div>
+                <div class="vibecode-wk-context">CONTEXT: "The error state is where users decide whether to trust you or leave."</div>
+              </div>
+              <div class="vibecode-week">
+                <div class="vibecode-week-header"><div class="vibecode-wk-num">WEEK 07</div><div class="vibecode-wk-title">Let's build a settings page — accessibility is a product decision, not a checklist</div></div>
+                <div class="vibecode-wk-body">
+                  <div class="vibecode-wk-item full"><strong style="color:var(--text);">Build:</strong> Settings UI with keyboard navigation, focus states, colour contrast pass</div>
+                  <div class="vibecode-wk-item">WCAG 2.1 AA — what it means in practice vs. in spec</div>
+                  <div class="vibecode-wk-item">Keyboard-first design — tab order as product logic</div>
+                  <div class="vibecode-wk-item">Colour contrast — why your grey text is unreadable to 1 in 12 users</div>
+                  <div class="vibecode-wk-item">Focus states — the most deleted thing in every CSS reset</div>
+                </div>
+                <div class="vibecode-wk-context">CONTEXT: "When 80 million people use your product, roughly 12 million have some form of disability."</div>
+              </div>
+              <div class="vibecode-week">
+                <div class="vibecode-week-header"><div class="vibecode-wk-num">WEEK 08</div><div class="vibecode-wk-title">Let's build a deployment view — observability as UX</div></div>
+                <div class="vibecode-wk-body">
+                  <div class="vibecode-wk-item full"><strong style="color:var(--text);">Build:</strong> Live deployment status panel — health, rollout %, recent events, rollback button</div>
+                  <div class="vibecode-wk-item">Signal vs. noise — what to surface vs. what to filter</div>
+                  <div class="vibecode-wk-item">Alerting fatigue — when everything is red, red means nothing</div>
+                  <div class="vibecode-wk-item">Actionable metrics — a number without a next action is just anxiety</div>
+                  <div class="vibecode-wk-item">The rollback button — why it needs to be fast</div>
+                </div>
+                <div class="vibecode-wk-context">CONTEXT: "The difference between a good deploy dashboard and a bad one is whether your on-call engineer panics at 2am."</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="art-subpanel" id="art-tech-ideas">
+            <div class="cp-pillar-detail">
+              <div class="cp-pillar-desc-card" style="border-top:3px solid #58a6ff">
+                <div class="pillar-icon">💻</div>
+                <div class="pillar-name">TECH BADDIE CORE</div>
+                <div class="pillar-tags">
+                  <div class="pillar-tag">What I actually ship at Microsoft</div>
+                  <div class="pillar-tag">AI PM perspective — no jargon</div>
+                  <div class="pillar-tag">Hackathon wins + startup origin</div>
+                  <div class="pillar-tag">Interviewer for uni program</div>
+                </div>
+              </div>
+              <div>
+                <div class="cp-section-label" style="margin-bottom:12px;">// ideas</div>
+                <div class="cp-ideas-list">
+                  <div class="idea-row"><span class="idea-format if-reel">reel</span>"but does she know how to reverse a binary search tree" — bro I won 5 hackathons 🏆 <em style="color:var(--green);font-size:0.75rem;"> ✓ scripted</em></div>
+                  <div class="idea-row"><span class="idea-format if-reel">reel</span>vibecode with nuzhat — implementing a feature while explaining the product decision rooted in UX principles <em style="color:var(--green);font-size:0.75rem;"> ✓ 8-week plan</em></div>
+                  <div class="idea-row"><span class="idea-format if-reel">reel</span>I failed intro to Python. Then I went to Microsoft.</div>
+                  <div class="idea-row"><span class="idea-format if-carousel">carousel</span>POV: your manager says "so you code, design AND talk to anything that moves — have you considered product?"</div>
+                  <div class="idea-row"><span class="idea-format if-carousel">carousel</span>What an AI PM actually ships at Azure — explained in plain English, zero jargon</div>
+                  <div class="idea-row"><span class="idea-format if-carousel">carousel</span>5 hackathons won. Here's what an actually good idea looks like at 3am.</div>
+                  <div class="idea-row"><span class="idea-format if-carousel">carousel</span>I interview students for Microsoft's university program — here's the real advice nobody gives</div>
+                  <div class="idea-row"><span class="idea-format if-reel">reel</span>I graduated in May 2023. My signing bonus was exactly my loan amount. Chapter closed.</div>
+                  <div class="idea-row"><span class="idea-format if-reel">reel</span>I pirated Windows to use MS Paint at 10. Now I work at the place that built it.</div>
+                  <div class="idea-row"><span class="idea-format if-carousel">carousel</span>Building PrivaC: from hackathon table to 300+ cybercrime victims helped in Bangladesh</div>
+                  <div class="idea-row"><span class="idea-format if-reel">reel</span>My professor cosigned my student loan. I gave the commencement speech 2 months later.</div>
+                  <div class="idea-row"><span class="idea-format if-carousel">carousel</span>What solving problems for people in Bangladesh taught me about product management</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- end tech panel -->
+
+        <!-- ══════ 2b or not 2B ══════ -->
+        <div class="cp-panel" id="cp-art">
+          <div class="cp-pillar-detail">
+            <div class="cp-pillar-desc-card" style="border-top:3px solid #f472b6">
+              <div class="pillar-icon">🎨</div>
+              <div class="pillar-name">2b or not 2B</div>
+              <div class="pillar-tags">
+                <div class="pillar-tag">Charcoal · graphite · the defiant red splash</div>
+                <div class="pillar-tag">Art teacher at 17, solo show at 26</div>
+                <div class="pillar-tag">Identity in conflicting light and shadow</div>
+                <div class="pillar-tag">Bideshini — woman from a foreign land</div>
+                <div class="pillar-tag">16 works. Acrylic, ink, graphite, charcoal.</div>
+              </div>
+              <div style="margin-top:16px;">
+                <div class="palette-card">
+                  <div class="palette-gradient"></div>
+                  <div class="palette-swatches">
+                    <div class="pswatch" style="background:#0a0a0a;"></div>
+                    <div class="pswatch" style="background:#1a0505;"></div>
+                    <div class="pswatch" style="background:#3d0a0a;"></div>
+                    <div class="pswatch" style="background:#6b0a1e;"></div>
+                    <div class="pswatch" style="background:#8b1a1a;"></div>
+                    <div class="pswatch" style="background:#dc143c;"></div>
+                    <div class="pswatch" style="background:#c45400;"></div>
+                    <div class="pswatch" style="background:#e85d04;"></div>
+                  </div>
+                  <div class="palette-label">// the whole palette</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="art-subnav">
+                <button class="art-subnav-tab active" data-art="artist-statement">artist</button>
+                <button class="art-subnav-tab" data-art="bideshini">bideshini</button>
+                <button class="art-subnav-tab" data-art="artworks">catalogue</button>
+                <button class="art-subnav-tab" data-art="art-ideas">reel ideas</button>
+              </div>
+              <div class="art-subpanel active" id="art-artist-statement">
+                <div class="cp-section-label" style="margin-bottom:14px;">// artist</div>
+                <div class="art-bio-block">Born in the vibrant yet excruciating chaos of Dhaka, <em>Nuzhat Minhaz</em> is a Bangladeshi artist whose work explores the shapeshifting and conflicting nature of identity through charcoal, graphite, and the occasional defiant splash of red. She draws figures who are neither fully here nor fully there — women caught between belonging and longing, strength and grief, visibility and erasure.</div>
+                <div class="art-bio-block">Art teacher at 17. National athlete at 16. Cybersecurity startup founder at 19. Tech PM at 22. Solo exhibit by the Seattle waterfront at 26. She is not one thing. That has always been the point.</div>
+                <div class="art-quote">"I have always drawn what I couldn't say. The figures in my work are not portraits of absence — they are portraits of the weight of being present in a world that keeps demanding you translate yourself."</div>
+                <div class="art-bio-block">Her mediums — charcoal, graphite 6B and 8B, ink and brush, acrylic — are chosen for what they resist. Charcoal smears. Graphite ghosts. Ink doesn't forgive. Acrylic covers what came before, eventually.</div>
+              </div>
+              <div class="art-subpanel" id="art-bideshini">
+                <div class="cp-section-label" style="margin-bottom:14px;">// মেঘের পরে মেঘ — clouds upon clouds</div>
+                <div class="art-show-title">BIDESHINI<span> — show statement</span></div>
+                <div class="art-show-sub">Solo exhibition · Seattle waterfront · 2026</div>
+                <div class="art-bio-block">I have been called <em>Bideshini</em> — a woman from a foreign land. Unreachable because my thoughts can never fully translate, and even when they do, the translation carries something that isn't quite the feeling anymore.</div>
+                <div class="art-quote">"This show is my passport of contradictions. It is the archive of what I carried, what I couldn't leave behind, and what I became in the distance between."</div>
+                <div class="art-bio-block">These 16 works were made across three countries and a decade of displacement. Not all displacement is painful. Some of it is chosen. Some of it is the price you pay for becoming who you needed to be.</div>
+                <div class="art-bio-block">The figures in these works are not me. They are all of me. The girl who got on a plane alone. The woman who won who knew something was being lost in the winning.</div>
+                <div class="art-bio-block" style="color:var(--text-3);font-size:0.78rem;">মেঘের পরে মেঘ — Clouds upon clouds. "Clouds upon clouds gather in the sky." A Tagore line about accumulation, about what builds before the break.</div>
+              </div>
+              <div class="art-subpanel" id="art-artworks">
+                <div class="cp-section-label" style="margin-bottom:14px;">// catalogue · 16 works</div>
+                <div class="art-works-list">
+                  <div class="art-work"><div class="art-work-title">Fruits of My Labor</div><div class="art-work-meta">2025 · Pencil</div><div class="art-work-desc">Everything I have built, at arm's length. The question is whether I can finally hold it.</div></div>
+                  <div class="art-work"><div class="art-work-title">Reach</div><div class="art-work-meta">2022 · Pencil</div><div class="art-work-desc">The figure extends toward something just outside the frame. You don't see what it is. That's the point.</div></div>
+                  <div class="art-work"><div class="art-work-title">Shaded Divinity</div><div class="art-work-meta">2022 · Charcoal and graphite</div><div class="art-work-desc">The sacred doesn't announce itself. It arrives in the quality of light through a window you almost didn't open.</div></div>
+                  <div class="art-work"><div class="art-work-title">Conceal but Declare</div><div class="art-work-meta">2022 · Graphite</div><div class="art-work-desc">A figure that hides what it cannot name and announces it anyway — in posture, in the tension of the hands.</div></div>
+                  <div class="art-work"><div class="art-work-title">Cross-Examination</div><div class="art-work-meta">2022 · Charcoal and graphite</div><div class="art-work-desc">What it feels like to be interrogated by your own history. By the woman you used to be.</div></div>
+                  <div class="art-work"><div class="art-work-title">Blade in Silk</div><div class="art-work-meta">2023 · Charcoal</div><div class="art-work-desc">Softness as a form of danger. Grace that has learned something the world didn't intend to teach it.</div></div>
+                  <div class="art-work"><div class="art-work-title">Where It Hurts She Heals</div><div class="art-work-meta">2025 · Charcoal</div><div class="art-work-desc">Not recovery. Not resolution. The specific ache of healing in the exact place the wound was.</div></div>
+                  <div class="art-work"><div class="art-work-title">Her Back to the World</div><div class="art-work-meta">2023 · Ink</div><div class="art-work-desc">Not defeat. A choice. The figure faces away because she has earned the right to stop performing her own presence.</div></div>
+                  <div class="art-work"><div class="art-work-title">Untethered</div><div class="art-work-meta">2024 · Charcoal</div><div class="art-work-desc">What freedom looks like when it wasn't chosen. The body in open space.</div></div>
+                  <div class="art-work"><div class="art-work-title">Displacement</div><div class="art-work-meta">2025 · Charcoal</div><div class="art-work-desc">The physics term is accurate. Something forced out of its original position by something that arrived and took up space.</div></div>
+                  <div class="art-work"><div class="art-work-title">The Weight of Skin</div><div class="art-work-meta">2025 · Graphite 6B 8B</div><div class="art-work-desc">6B for shadow. 8B for the places where shadow becomes something closer to erasure.</div></div>
+                  <div class="art-work"><div class="art-work-title">Rehearsal for Presence</div><div class="art-work-meta">2025 · Charcoal</div><div class="art-work-desc">Practice. The figure is practicing being here. Being visible. Being enough in a room that didn't build itself around her.</div></div>
+                  <div class="art-work"><div class="art-work-title">আদর (Ador)</div><div class="art-work-meta">Undated · Ink and brush</div><div class="art-work-desc">The Bengali word for tenderness that has no clean English translation. Gentleness that holds, not grasps.</div></div>
+                  <div class="art-work"><div class="art-work-title">Rupture</div><div class="art-work-meta">2025 · Acrylic</div><div class="art-work-desc">The first acrylic in the series. Color because some breaks aren't grey. Some are loud and warm.</div></div>
+                  <div class="art-work"><div class="art-work-title">The Only Witness</div><div class="art-work-meta">2025 · Acrylic</div><div class="art-work-desc">You were there. You are the only one who knows exactly what that was.</div></div>
+                  <div class="art-work"><div class="art-work-title">Drown but slowly</div><div class="art-work-meta">2022 · Acrylic on canvas · after Elly Smallwood</div><div class="art-work-desc">Made in conversation with Elly Smallwood's submerged figures. Submersion without surrender.</div></div>
+                </div>
+              </div>
+              <div class="art-subpanel" id="art-art-ideas">
+                <div class="cp-section-label" style="margin-bottom:14px;">// reel ideas · 2b or not 2B</div>
+                <div class="cp-ideas-list">
+                  <div class="idea-row"><span class="idea-format if-reel">reel</span>lipstick shade matching as an artist who knows color theory 💄🎨</div>
+                  <div class="idea-row"><span class="idea-format if-reel">reel</span>The neon sign says "2b or not 2B". That's the whole personality.</div>
+                  <div class="idea-row"><span class="idea-format if-reel">reel</span>Desk setup reveal — dark cherry × neon × code on screen</div>
+                  <div class="idea-row"><span class="idea-format if-reel">reel</span>Speed paint with voiceover — the chapter this painting was made in</div>
+                  <div class="idea-row"><span class="idea-format if-carousel">carousel</span>My solo art exhibit in Seattle: the first time my family saw it in real life</div>
+                  <div class="idea-row"><span class="idea-format if-reel">reel</span>Sketch journal during a lunch break in Vancouver 🖊️</div>
+                  <div class="idea-row"><span class="idea-format if-carousel">carousel</span>16 works from the Bideshini show — one sentence on each one</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- end art panel -->
+
+        <!-- ══════ MADE IN DHAKA ══════ -->
+        <div class="cp-panel" id="cp-dhaka">
+          <div class="cp-pillar-detail">
+            <div class="cp-pillar-desc-card" style="border-top:3px solid #dc143c">
+              <div class="pillar-icon">🌶️</div>
+              <div class="pillar-name">MADE IN DHAKA</div>
+              <div class="pillar-tags">
+                <div class="pillar-tag">Lalmatia → RIT → Vancouver</div>
+                <div class="pillar-tag">South Asian identity — specific stories</div>
+                <div class="pillar-tag">National basketball + cooking</div>
+                <div class="pillar-tag">Family — the reason for everything</div>
+              </div>
+            </div>
+            <div>
+              <div class="cp-section-label" style="margin-bottom:12px;">// ideas</div>
+              <div class="cp-ideas-list">
+                <div class="idea-row"><span class="idea-format if-reel">reel</span>another dhaka girl who became a DJ? nope just a competitive coder — opens on me vibing at a laptop, zooms out to reveal I'm competing on a projector screen 😂</div>
+                <div class="idea-row"><span class="idea-format if-reel">reel</span>Momtaz in the background + cooking + zero explanation. Just vibes. Let the diaspora find it.</div>
+                <div class="idea-row"><span class="idea-format if-reel">reel</span>"ফাগুনের মোহনায়" but make it a Vancouver sunset transition 🌅</div>
+                <div class="idea-row"><span class="idea-format if-reel">reel</span>Rickshaw ride in Dhaka with VO about what it felt like to come back</div>
+                <div class="idea-row"><span class="idea-format if-reel">reel</span>Street food in Dhaka — fuchka, chotpoti, shingara — POV: the girl who left is back and she is EATING</div>
+                <div class="idea-row"><span class="idea-format if-reel">reel</span>Dancing in Bangladesh — wedding, mehendi, or just the living room. The body remembers what the brain forgot.</div>
+                <div class="idea-row"><span class="idea-format if-carousel">carousel</span>I was recruited to Bangladesh's first U18 women's basketball team at 16. I'm 5'3.</div>
+                <div class="idea-row"><span class="idea-format if-reel">reel</span>At 19 I walked into a 24hr hackathon and built something. It's now a real company in Bangladesh.</div>
+                <div class="idea-row"><span class="idea-format if-carousel">carousel</span>PrivaShe Hacks 2020 — Bangladesh's first all-female virtual hackathon, during a pandemic</div>
+                <div class="idea-row"><span class="idea-format if-carousel">carousel</span>I chose RIT because I liked the sound of it. It is 8 hours north of NYC. My parents still bring it up.</div>
+                <div class="idea-row"><span class="idea-format if-reel">reel</span>Prawn curry + paratha mise en place — Sunday cooking from memory 🍛</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════ MOVEMENT ══════ -->
+        <div class="cp-panel" id="cp-movement">
+          <div class="cp-pillar-detail">
+            <div class="cp-pillar-desc-card" style="border-top:3px solid #22d3ee">
+              <div class="pillar-icon">💃</div>
+              <div class="pillar-name">MOVEMENT</div>
+              <div class="pillar-tags">
+                <div class="pillar-tag">Bachata + salsa social nights</div>
+                <div class="pillar-tag">3–5 mile runs — Coal Harbour</div>
+                <div class="pillar-tag">Vancouver aesthetic — city + water</div>
+                <div class="pillar-tag">Self-care Saturday rituals</div>
+              </div>
+            </div>
+            <div>
+              <div class="cp-section-label" style="margin-bottom:12px;">// ideas</div>
+              <div class="cp-ideas-list">
+                <div class="idea-row"><span class="idea-format if-reel">reel</span>10 minute makeup routine when I'm running to the office for a 12 hour workday ⏰</div>
+                <div class="idea-row"><span class="idea-format if-reel">reel</span>Bachata social night — the art of dancing with strangers</div>
+                <div class="idea-row"><span class="idea-format if-reel">reel</span>5am Coal Harbour run — the sunrise is actually pink</div>
+                <div class="idea-row"><span class="idea-format if-collab">collab</span>BC Dance — behind the scenes social media night</div>
+                <div class="idea-row"><span class="idea-format if-reel">reel</span>Saturday self-care ritual in Vancouver — no context needed</div>
+                <div class="idea-row"><span class="idea-format if-reel">reel</span>GRWM: office day when you're genuinely excited about what you're shipping</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════ BUILD LOGS ══════ -->
+        <div class="cp-panel" id="cp-build">
+          <div class="cp-pillar-detail">
+            <div class="cp-pillar-desc-card" style="border-top:3px solid #f59e0b">
+              <div class="pillar-icon">⚡</div>
+              <div class="pillar-name">BUILD LOGS</div>
+              <div class="pillar-tags">
+                <div class="pillar-tag">PrivaC — hackathon to real company</div>
+                <div class="pillar-tag">Building a new life in Vancouver</div>
+                <div class="pillar-tag">How a chapter begins and ends</div>
+                <div class="pillar-tag">Where I'm going next</div>
+              </div>
+            </div>
+            <div>
+              <div class="cp-section-label" style="margin-bottom:12px;">// ideas</div>
+              <div class="cp-ideas-list">
+                <div class="idea-row"><span class="idea-format if-carousel">carousel</span>I graduated in May 2023. My signing bonus was exactly my loan amount. Chapter closed.</div>
+                <div class="idea-row"><span class="idea-format if-reel">reel</span>I pirated Windows to use MS Paint at 10. Now I work at the place that built it.</div>
+                <div class="idea-row"><span class="idea-format if-carousel">carousel</span>Building PrivaC: from hackathon table to 300+ cybercrime victims helped in Bangladesh</div>
+                <div class="idea-row"><span class="idea-format if-carousel">carousel</span>What solving problems for people in Bangladesh taught me about product management</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end cp-main -->
+
+      <!-- ── SIDEBAR ── -->
+      <div class="cp-sidebar" id="cp-sidebar">
+
+        <div class="palette-card" style="margin-bottom:4px;">
+          <div class="palette-gradient"></div>
+          <div class="palette-swatches">
+            <div class="pswatch" style="background:#0a0a0a;"></div>
+            <div class="pswatch" style="background:#1a0505;"></div>
+            <div class="pswatch" style="background:#3d0a0a;"></div>
+            <div class="pswatch" style="background:#6b0a1e;"></div>
+            <div class="pswatch" style="background:#8b1a1a;"></div>
+            <div class="pswatch" style="background:#dc143c;"></div>
+            <div class="pswatch" style="background:#c45400;"></div>
+            <div class="pswatch" style="background:#e85d04;"></div>
+          </div>
+          <div class="palette-label">// dark cherry · lana del rey core</div>
+        </div>
+
+        <div>
+          <div class="cp-section-label">// platform status</div>
+          <div class="platform-card">
+            <div class="pf-platform">Instagram</div>
+            <div class="pf-count">1,200 <span>followers</span></div>
+            <div class="pf-goal">Goal: 20,000 by end of year</div>
+            <div class="pf-bar"><div class="pf-bar-fill ig" style="width:6%"></div></div>
+            <div class="pf-status">6% to goal &nbsp;·&nbsp; 3× / week · Reels + carousels</div>
+            <div style="margin-top:6px;font-family:var(--font-body);font-size:0.72rem;color:var(--text-3);font-style:italic;line-height:1.5;">painting, programming, pouting my way thru life. · product manager @ microsoft CoreAI · Founder @ PrivaC · RIT '22</div>
+          </div>
+          <div class="platform-card">
+            <div class="pf-platform">TikTok</div>
+            <div class="pf-count">— <span>not launched yet</span></div>
+            <div class="pf-goal">Goal: 5,000 by end of year</div>
+            <div class="pf-bar"><div class="pf-bar-fill tt" style="width:0%"></div></div>
+            <div class="pf-status">build 10-post backlog first · repurpose IG Reels</div>
+          </div>
+          <div class="platform-card">
+            <div class="pf-platform">LinkedIn</div>
+            <div class="pf-count">5,000 <span>followers</span></div>
+            <div class="pf-goal">Goal: 10,000 by end of year</div>
+            <div class="pf-bar"><div class="pf-bar-fill li" style="width:50%"></div></div>
+            <div class="pf-status">50% to goal &nbsp;·&nbsp; 1× / week · product + career angle</div>
+            <div style="margin-top:6px;font-family:var(--font-body);font-size:0.72rem;color:var(--text-3);font-style:italic;line-height:1.5;">Product @ Microsoft Apps &amp; Agents / Observability // Azure Data + Foundry CoreAI // Founder @ PrivaC</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="cp-section-label">// setup budget · den &amp; desk</div>
+          <div class="setup-item"><div class="setup-item-name">🎤 Portable Mic</div><div class="setup-item-note">DJI Mic Mini or Rode Wireless GO II</div><div class="setup-item-amt">~$100 CAD</div></div>
+          <div class="setup-item"><div class="setup-item-name">💡 LED Bias Lighting</div><div class="setup-item-note">Cherry red ambient glow behind the monitor</div><div class="setup-item-amt">~$50 CAD</div></div>
+          <div class="setup-item"><div class="setup-item-name">📚 Floating Shelf</div><div class="setup-item-note">Books, art, objects — something that says I live here</div><div class="setup-item-amt">~$80 CAD</div></div>
+          <div class="setup-item"><div class="setup-item-name">🖥️ Desk Riser</div><div class="setup-item-note">Sit-stand converter for current desk</div><div class="setup-item-amt">~$200–300 CAD</div></div>
+          <div class="setup-item" style="border-top-color:var(--red);"><div class="setup-item-name">✨ Neon Sign</div><div class="setup-item-note">"2b or not 2B" — brand anchor. Custom Etsy or local Vancouver maker.</div><div class="setup-item-amt">~$120–150 CAD</div></div>
+          <div class="setup-total"><span>TOTAL</span><span style="color:var(--red)">~$550–680 CAD</span></div>
+        </div>
+
+      </div><!-- end sidebar -->
+
+    </div><!-- end cp-content-grid -->
+
+  </div><!-- end content-page -->
+
+  <!-- Mobile sidebar toggle (injected before sidebar on mobile) -->
+  <script>
+    // Live date
+    const liveDate = document.getElementById('live-date');
+    const now = new Date();
+    liveDate.textContent = now.toLocaleDateString('en-CA', {
+      weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
+    }).toUpperCase();
+
+    // Main panel switching
+    document.querySelectorAll('.cp-subnav-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.cp-subnav-tab').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.cp-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('cp-' + btn.dataset.panel).classList.add('active');
+      });
+    });
+
+    // Art panel inner sub-tabs
+    document.querySelectorAll('#cp-art .art-subnav-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#cp-art .art-subnav-tab').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('#cp-art .art-subpanel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('art-' + btn.dataset.art)?.classList.add('active');
+      });
+    });
+
+    function switchTechTab(btn) {
+      const panel = btn.closest('.cp-panel');
+      panel.querySelectorAll('.art-subnav-tab').forEach(b => b.classList.remove('active'));
+      panel.querySelectorAll('.art-subpanel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('art-' + btn.dataset.art).classList.add('active');
+    }
+
+    // Mobile sidebar toggle
+    function injectSidebarToggle() {
+      if (window.innerWidth <= 768) {
+        const sidebar = document.getElementById('cp-sidebar');
+        if (sidebar && !document.getElementById('sidebar-toggle-btn')) {
+          const btn = document.createElement('button');
+          btn.id = 'sidebar-toggle-btn';
+          btn.className = 'sidebar-toggle';
+          btn.textContent = '▾ platform status + setup budget';
+          btn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            btn.textContent = sidebar.classList.contains('collapsed')
+              ? '▾ platform status + setup budget'
+              : '▴ hide sidebar';
+          });
+          sidebar.classList.add('collapsed');
+          sidebar.parentElement.insertBefore(btn, sidebar);
+        }
+      }
+    }
+    injectSidebarToggle();
+  </script>
+</body>
+</html>
